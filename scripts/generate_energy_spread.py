@@ -6,7 +6,13 @@ TODAY = datetime.date.today()
 START = TODAY - datetime.timedelta(days=90)
 
 # --- Brent (Yahoo Finance) ---
-brent = yf.download("BZ=F", start=START, end=TODAY)["Adj Close"].rename("Brent")
+# yfinance auto_adjust=True ile 'Close' döndürür; 'Adj Close' yok.
+brent_df = yf.download("BZ=F", start=START, end=TODAY, auto_adjust=True, progress=False, threads=False)
+if brent_df.empty:
+    raise RuntimeError("Brent data could not be downloaded")
+brent = brent_df["Close"].rename("Brent")
+brent.index = pd.to_datetime(brent.index).tz_localize(None)
+
 
 # --- JKM (Platts, opsiyonel) ---
 token = os.getenv("PLATTS_TOKEN", "")
