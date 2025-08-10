@@ -6,14 +6,14 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: write                   # PNG push için gerekli
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      PLATTS_TOKEN: ${{ secrets.PLATTS_TOKEN }}   # yoksa boş; script sadece Brent çizer
-      MPLBACKEND: Agg                              # headless matplotlib
+      PLATTS_TOKEN: ${{ secrets.PLATTS_TOKEN }}
+      MPLBACKEND: Agg
 
     steps:
       - name: Checkout
